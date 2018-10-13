@@ -1,0 +1,45 @@
+%!TEX program = xelatex
+\documentclass[a4papers]{ctexart}
+%数学符号
+\usepackage{amssymb}
+\usepackage{amsmath}
+%表格
+\usepackage{graphicx,floatrow}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{makecell}
+%页边距
+\usepackage{geometry}
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+%首行缩进两字符 利用\indent \noindent进行控制
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\setromanfont{Songti SC}
+%\setromanfont{Heiti SC}
+
+\title{Cryptography -- Homework 1}
+\author{冯诗伟161220039}
+\date{}
+\begin{document}
+\maketitle
+\section{8.2}
+
+\section{8.4}
+解：
+\indent 设这批钢索的断裂强度为$X$千克/平方厘米，$X \sim N(\mu,40^2)$，记原假设$H_0$和备择假设$H_1$分别为
+\[
+    H_0: \mu =\overline x - 20 \quad H_1 :\mu < \overline x - 20
+    \]
+检验统计量为$\dfrac{\overline X -\mu}{\sigma / \sqrt{n}}$，当$H_0$成立时，
+$U=\dfrac{\overline X -(\overline x - 20)}{\sigma / \sqrt{n}}\sim N(0,1)$。则检验的拒绝域为
+\[
+    W = \left\{ U=\dfrac{\overline X -(\overline x - 20)}{\sigma / \sqrt{n}} \le -u_{\alpha} \right\}
+    \]
+其中，$\overline X=\overline x，\sigma = 40，n=9，-u_{\alpha}=-u_{0.01}=-2.33,$
+检验统计量的观察值$u=1.5\notin W，$所以接受原假设，认为该批钢索的断裂强度有所提高。
+
+\section{8.6}
+
+\end{document}
