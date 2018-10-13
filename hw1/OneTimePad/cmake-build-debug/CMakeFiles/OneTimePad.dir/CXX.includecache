@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/fengshiwei/001NJU/2018Fall/Cryptography/Homework/hw1/OneTimePad/main.cpp
+iostream
+-
+sstream
+-
+iomanip
+-
+cryptopp/osrng.h
+-
+cryptopp/hex.h
+-
+cryptopp/filters.h
+-
+
