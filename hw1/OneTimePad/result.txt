@@ -1,0 +1,6 @@
+Please input your plaintext:
+hello world
+Length: 11
+PlainText : 68656c6c6f20776f726c64
+Key       : BFDB529373C2D1E0362C1C
+CipherText: d7be3eff1ce2a68f444078

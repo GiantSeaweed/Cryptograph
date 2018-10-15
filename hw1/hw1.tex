@@ -1,8 +1,10 @@
 %!TEX program = xelatex
 \documentclass[a4papers]{ctexart}
+\usepackage[english]{babel}
 %数学符号
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 %表格
 \usepackage{graphicx,floatrow}
 \usepackage{array}
@@ -24,22 +26,83 @@
 \date{}
 \begin{document}
 \maketitle
-\section{8.2}
+\section{Problem 1}
+\noindent Prove Lemma 2.6 : \\ Encryption scheme Π is perfectly secret if and only if it is perfectly indistinguishable.
+\begin{proof}
+\[  \mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A},\Pi}  \]
+I. Given that an encryption scheme $\Pi$ is perfectly secret. Let's do the adversial indistinguishable experiment ${\rm PrivK}^{eva}_{\mathcal{A},\Pi}$.
+Now the adversary $\mathcal{A}$ knows the ciphertext $c$ and he has to output a bit, 0 or 1. We have
+\[{\rm Pr}[M=m_0] ={\rm Pr}[M=m_1] = \dfrac{1}{2}\]
+Due to the perfectly secrecy,
+\[{\rm Pr}[M=m_0 | C=c] ={\rm Pr}[M=m_0] = \dfrac{1}{2}\]
+\[{\rm Pr}[M=m_1 | C=c] ={\rm Pr}[M=m_1] = \dfrac{1}{2}\]
+Thus, it is obvious that\[{\rm Pr}[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A},\Pi}=1] = \dfrac{1}{2} \]
+which means $\Pi$ is perfectly indistinguishable.\\
+II. Given that an encryption scheme $\Pi$ is perfectly indistinguishable. It means that even if I know the ciphertext of one of the two
+plaintext, the probability of success is exactly $\frac{1}{2}$ which is the same as that of just guessing.
+\[{\rm Pr}[M=m_0 | C=c] ={\rm Pr}[M=m_1 | C=c] = \dfrac{1}{2}\]
+\[\therefore{\rm Pr}[M=m_i | C=c] ={\rm Pr}[M=m_i] = \dfrac{1}{2},\, i=0,1.\]
+Therefore, $\Pi$ is perfectly secret.
+\end{proof}
 
-\section{8.4}
-解：
-\indent 设这批钢索的断裂强度为$X$千克/平方厘米，$X \sim N(\mu,40^2)$，记原假设$H_0$和备择假设$H_1$分别为
-\[
-    H_0: \mu =\overline x - 20 \quad H_1 :\mu < \overline x - 20
-    \]
-检验统计量为$\dfrac{\overline X -\mu}{\sigma / \sqrt{n}}$，当$H_0$成立时，
-$U=\dfrac{\overline X -(\overline x - 20)}{\sigma / \sqrt{n}}\sim N(0,1)$。则检验的拒绝域为
-\[
-    W = \left\{ U=\dfrac{\overline X -(\overline x - 20)}{\sigma / \sqrt{n}} \le -u_{\alpha} \right\}
-    \]
-其中，$\overline X=\overline x，\sigma = 40，n=9，-u_{\alpha}=-u_{0.01}=-2.33,$
-检验统计量的观察值$u=1.5\notin W，$所以接受原假设，认为该批钢索的断裂强度有所提高。
+\section{Problem 2}
+\noindent Prove or refute: Every encryption scheme for which the size of the key space equals the size of the message space, 
+and for which the key is chosen uniformly from the key space, is perfectly secret.
+\begin{proof}
+    Refute. These restrictions only focus on the size and distribution and do not pay attention to matters about distinguishability.
+Imagine an encryption scheme where $\mathcal{K}=\mathcal{M}= \{ 0,1\} ^{ \ell }$ and the key is uniformly chosen from $\mathcal{K}$ 
+while $\mathsf{Enc}_{K}(m)=m$.
+This encryption scheme is not secret at all.
+\end{proof}
 
-\section{8.6}
+\section{Problem 3}
+\noindent (a) Solution:
+\begin{alignat*}{2}
+    Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A},\Pi}=1] 
+    &= \dfrac{1}{2}Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A},\Pi}=1 | b=0] + \dfrac{1}{2}Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A},\Pi}=1 | b=1]\\
+    &= \dfrac{1}{2}Pr[\mathcal{A}\, {\rm output}\, 0 | b=0 ] + \dfrac{1}{2}Pr[\mathcal{A} \,{\rm output}\, 1 | b=1 ]\\
+    &= \dfrac{1}{2}Pr[\mathcal{A}\, {\rm output}\, 0 | b=0 ] +  \dfrac{1}{2}\Big(1-Pr[\mathcal{A}\, {\rm output} \, 0|b=1) \Big)\\
+    &= \dfrac{1}{2}\Big(\dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=0,\,t=1 ] 
+                      + \dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=0,\,t=2 ]
+                      + \dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=0,\,t=3 ]\Big) \\
+    &+ \dfrac{1}{2}\Big(1-\big( \dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=1,\,t=1 ] 
+                      + \dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=1,\,t=2 ] 
+                      + \dfrac{1}{3}Pr[\mathcal{A}\, {\rm output}\, 0 | b=1,\,t=3 ]\big) \Big)\\
+    &= \dfrac{1}{2}\Big(\dfrac{1}{3}\times 1+\dfrac{1}{3}\times\dfrac{26}{26^2}+\dfrac{1}{3}\times\dfrac{26\times 1\times 26}{26^3} \Big)
+      + \dfrac{1}{2}\Big(1-\big(\dfrac{1}{3}\times 0+\dfrac{1}{3}\times\dfrac{26}{26^2}+\dfrac{1}{3}\times\dfrac{26\times 1\times 26}{26^3} \big)\Big)\\
+    &= \dfrac{2}{3}
+\end{alignat*}
 
+\noindent (b) Solution:
+Define $\mathcal{A'}$ as follows: $\mathcal{A'}$ output $m_0=aa$ and $m_1=ab$.
+When give a ciphertext $c=c_1 c_2$, it outputs 0 if $c_1=c_2$, and outputs 1 if $c_1\ne _2$.
+\begin{alignat*}{2}
+    Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A'},\Pi}=1] 
+    &= \dfrac{1}{2}Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A'},\Pi}=1 | b=0] + \dfrac{1}{2}Pr[\mathsf{PrivK}^{\mathsf{eva}}_{\mathcal{A'},\Pi}=1 | b=1]\\
+    &= \dfrac{1}{2}Pr[\mathcal{A'}\, {\rm output}\, 0 | b=0 ] + \dfrac{1}{2}Pr[\mathcal{A'} \,{\rm output}\, 1 | b=1 ]\\
+    &= \dfrac{1}{2}Pr[\mathcal{A'}\, {\rm output}\, 0 | b=0 ] +  \dfrac{1}{2}\Big(1-Pr[\mathcal{A'}\, {\rm output} \, 0|b=1) \Big)\\
+    &= \dfrac{1}{2}\Big( \dfrac{1}{2}Pr[\mathcal{A'}\, {\rm output}\, 0 | b=0,\, t=1 ]+\dfrac{1}{2}Pr[\mathcal{A'}\, {\rm output}\, 0 | b=0,\, t=2 ]\Big)\\
+    &+ \dfrac{1}{2}\Big( 1 - \big( \dfrac{1}{2} Pr[\mathcal{A'}\, {\rm output} \, 0|b=1\, t=1) +  \dfrac{1}{2} Pr[\mathcal{A'}\, {\rm output} \, 0|b=1\, t=2)\big)\Big)\\
+    &= \dfrac{1}{2}\Big(\dfrac{1}{2}\times 1+\dfrac{1}{2}\times\dfrac{1}{26} \Big)
+      + \dfrac{1}{2}\Big(1-\big(\dfrac{1}{3}\times 0+\dfrac{1}{2}\times\dfrac{1}{26} \big)\Big)\\
+    &= \dfrac{3}{4} > \dfrac{2}{3}
+\end{alignat*}
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
