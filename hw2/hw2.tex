@@ -26,7 +26,15 @@
 \begin{document}
 \maketitle
 \section*{3.14}
-
+\noindent If $F$ is a length-preserving pseudorandom function, we have
+ \[|Pr\big[ D^{F_k(·)}(1^n)=1\big] - Pr\big[ D^{f(·)}(1^n)=1\big]| \le negl(n)\]
+ It means that no efficient adversary can distinguish $F_k$ from $f$.\\
+ Go back to $G(s) =F_s(1)||F_s(2)||···||F_s(\ell)$. \\
+ Consider a uniform string $r \in \{ 0,1 \}^{\ell·n}$. For a fixed $r$, it will be the output of $f$ with a probability of $2^{-\ell·n}$.
+ Meanwhile, it will be the output of $G(s)$ with a probability of $(2^{-n})^\ell = 2^{-\ell·n}$ since $F_k(x)$ and $F_k(y)$ are independent if $x\ne y$.\\
+ Therefore, for any efficient distinguisher, there will be 
+ \[|Pr[D(G(s))=1]-Pr[D(r)=1]| \le negl(n)\]
+ Notice that $G(s)$ is deterministic. So $G(s)$ is a pseudorandom generator with an expansion factor of $\ell·n$.
 
 \section*{3.19}
 \subsection*{a}

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  7 NOV 2018 03:27
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  7 NOV 2018 10:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1465,39 +1465,38 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Try loading font information for U+msb on input line 27.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \hbox (badness 10000) in paragraph at lines 56--65
-
- []
-
-[1
+) [1
 
 ]
+Underfull \hbox (badness 10000) in paragraph at lines 64--73
+
+ []
+
 
 LaTeX Font Warning: Font shape `TU/SongtiSC(0)/m/sl' undefined
-(Font)              using `TU/SongtiSC(0)/m/n' instead on input line 98.
+(Font)              using `TU/SongtiSC(0)/m/n' instead on input line 93.
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 102--115
+Underfull \hbox (badness 10000) in paragraph at lines 110--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--130
+Underfull \hbox (badness 10000) in paragraph at lines 125--138
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 142--159
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 134--151
+Underfull \hbox (badness 10000) in paragraph at lines 142--159
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 134--151
-
- []
-
-[3] [4] (./hw2.aux)
+[4] [5] (./hw2.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1505,10 +1504,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  22223 strings out of 493005
  446952 string characters out of 6134596
- 477461 words of memory out of 5000000
+ 476461 words of memory out of 5000000
  25980 multiletter control sequences out of 15000+600000
  11422 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,12n,67p,10485b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on hw2.pdf (4 pages).
+Output written on hw2.pdf (5 pages).
