@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/fengshiwei/001NJU/2018Fall/Cryptography/Homework/hw2/TripleDES/main.cpp
+cryptopp/osrng.h
+-
+iostream
+-
+string
+-
+cstdlib
+-
+cryptopp/cryptlib.h
+-
+cryptopp/hex.h
+-
+cryptopp/filters.h
+-
+cryptopp/des.h
+-
+cryptopp/modes.h
+-
+cryptopp/secblock.h
+-
+cryptopp/config.h
+-
+fstream
+-
+
