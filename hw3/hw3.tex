@@ -1,0 +1,133 @@
+%!TEX program = xelatex
+\documentclass[a4papers]{ctexart}
+%数学符号
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%表格
+\usepackage{graphicx,floatrow}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{makecell}
+%页边距
+\usepackage{geometry}
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+%首行缩进两字符 利用\indent \noindent进行控制
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\setromanfont{Songti SC}
+% \setromanfont{Heiti SC}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+
+\title{Cryptography--Homework 3}
+\author{冯诗伟161220039}
+\date{}
+\begin{document}
+\maketitle
+\section*{1}
+\subsection*{a}
+No. Construct a new message $m'=m_2||m_1||m_3||\cdots||m_\ell$ by swapping the first two blocks of $m$ and use $m'$ to query the oracle.
+We can get $t'=\mc{O}(m')=\ms{Mac_k}(m')=F_k(m_2)\oplus F_k(m_1)\oplus F_k(m_3)\oplus \cdots \oplus F_k(m_\ell)=\ms{Mac_k}(m)$.
+So we successfully forge a valid tag $t'$ such that $\ms{Vrfy_k}(m,t')=1$ and $(m,t')\notin \mc{Q}$.
+
+\subsection*{b}
+No. Given $m=m1||m2$, we can easily find two messages $m1', m2'(m1'\ne m1,\ m2'\ne m2)$. Then we can constrcut two new messages $m_A$ and $m_B$, where
+$m_A=m1'||m2$, $m_B=m1||m2'$. 
+
+Query the oracle with $m_A$, we can get $\mc{O}(m_A)=F_k(m_1')||F_k(F_k(m_2))$.
+Query the oracle with $m_B$, we can get $\mc{O}(m_b)=F_k(m_1)||F_k(F_k(m_2'))$.
+By concatenating the former half of $\mc{O}(m_b)$ with the latter half of $\mc{O}(m_A)$, we can forge a valid tag $t=F_k(m_1)||F_k(F_k(m_2))=\ms{Mac}_k(m)$, where $\ms{Vrfy_k}(m,t)=1$ and $(m,t)\notin \mc{Q}$.
+
+\subsection*{c}
+No. Given $m=m_1||m_2||m_3||\cdots||m_\ell$, we can construct the following three messages:
+\[m_A=m_1||m_2||m_2||\cdots||m_\ell\]
+\[m_B=m_2||m_2||m_2||\cdots||m_\ell\]
+\[m_C=m_2||m_2||m_3||\cdots||m_\ell\]
+
+Then we query the oracle with these three new messages and produce a tag $t$ by 
+XOR the three responses.
+\begin{alignat*}{2}
+    t &= \mc{O}(m_A)\oplus \mc{O}(m_b)\oplus \mc{O}(m_c)\\
+    &= F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i)\\
+    &\oplus  F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i)\\
+    &\oplus  F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i)\\
+    &= F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i)\\
+    &= F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \cdots \oplus F_k(<\ell>|m_\ell)\\
+    &= \ms{Mac}_k(m)
+\end{alignat*}
+
+So we successfully forge a valid tag $t$ where $\ms{Vrfy_k}(m,t)=1$ and $(m,t)\notin \mc{Q}$.
+
+\subsection*{d}
+No. Given $m=m_1||m_2||m_3||\cdots||m_\ell$, we can first construct the following messages:
+\[ m_A=m_1||m_2||m_2||\cdots||m_\ell \]
+
+Then we query the oracle with $m_A$ and get the response:
+\begin{alignat*}{2}
+\mc{O}(m_A)&=(r,m_r)\\
+    &=(r,\, F_k(r)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) )
+\end{alignat*}
+
+We can parse $r$ as $r=<x>|r'$, where the former half is the $\frac{n}{2}$-encoding of the integer $x$.
+
+Construct the second message:
+\[ m_B=m_2||m_2||m_2||\cdots||r'||\cdots||m_\ell \]
+where $r'$ is the $x$-th block and $\ell=2^{\frac{n}{2}}$. We can query the oracle with $m_A$ mutiple times until $x\ge4$.
+
+Then we query the oracle with $m_B$ and get the response:
+\begin{alignat*}{2}
+  \mc{O}(m_B)&=(p,m_p)\\
+  &=(p,\, F_k(p)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus F_k(<x>|r')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i) )
+\end{alignat*}
+
+Similarly, We can parse $p$ as $p=<y>|p'$, where the former half is the $\frac{n}{2}$-encoding of the integer $y$.
+
+Construct the third message:
+\[ m_C=m_2||m_2||m_3||\cdots||p'||\cdots||m_\ell \]
+where $p'$ is the $y$-th block and $\ell=2^{\frac{n}{2}}$. We can query the oracle with $m_B$ mutiple times until $y\ge4$.
+
+Then we query the oracle with $m_C$ and get the response:
+\begin{alignat*}{2}
+  \mc{O}(m_C)&=(q,m_q)\\
+  &=(q,\, F_k(q)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus F_k(<y>|p')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i) )
+\end{alignat*}
+
+Notice that $F_k(<x>|r')=F_k(r),\,F_k(<y>|p')=F_k(p)$, we can produce the tag $t=(q,M)$ and 
+\begin{alignat*}{2}
+    M &= m_r \oplus m_q \oplus m_q\\
+    &= F_k(r)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) \\
+    &\oplus F_k(p)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus F_k(<x>|r')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i) \\
+    &\oplus F_k(q)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus F_k(<y>|p')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i)\\
+    &=F_k(q)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) \\
+    &\oplus F_k(r)\oplus F_k(<x>|r') \oplus F_k(p)\oplus  F_k(<y>|p') \\
+    &=F_k(q)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) 
+\end{alignat*}
+
+The discussion above is based on the condition that $x$ and $y$ are greater than 4.
+\begin{alignat*}{2}
+    \Pr[x\ge 4 \wedge y\ge 4]&=\Pr[x\ge 4]\Pr[y\ge4]\\
+    &= (1-2^{\frac{n}{2}-2})^2
+\end{alignat*}
+
+So we can construct an adversary $\mc{A}$ conducting the steps mentioned above so that
+\[\Pr[\ms{Mac}-\ms{sforge}_{\mc{A},\Pi}] = 1 = (1-2^{\frac{n}{2}-2})^2\]
+which is non-negligible.
+
+With a non-negligible probability we successfully forge a valid tag $t=(q,M)$ where $\ms{Vrfy_k}(m,t)=1$ and $(m,t)\notin \mc{Q}$, 
+so this $\ms{MAC}$ is not strongly secure.
+\section*{2}
+\subsection*{a}
+
+\subsection*{b}
+
+\subsection*{c}
+
+
+\subsection*{d}
+
+\section*{Additional 3.26}
+
+\end{document}
