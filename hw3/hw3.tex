@@ -34,7 +34,7 @@ We can get $t'=\mc{O}(m')=\ms{Mac_k}(m')=F_k(m_2)\oplus F_k(m_1)\oplus F_k(m_3)\
 So we successfully forge a valid tag $t'$ such that $\ms{Vrfy_k}(m,t')=1$ and $(m,t')\notin \mc{Q}$.
 
 \subsection*{b}
-No. Given $m=m1||m2$, we can easily find two messages $m1', m2'(m1'\ne m1,\ m2'\ne m2)$. Then we can constrcut two new messages $m_A$ and $m_B$, where
+No. Given $m=m1||m2$, we can easily find two messages $m1', m2'(m1'\ne m1,\ m2'\ne m2)$. Then we can construct two new messages $m_A$ and $m_B$, where
 $m_A=m1'||m2$, $m_B=m1||m2'$. 
 
 Query the oracle with $m_A$, we can get $\mc{O}(m_A)=F_k(m_1')||F_k(F_k(m_2))$.
@@ -71,7 +71,7 @@ Then we query the oracle with $m_A$ and get the response:
     &=(r,\, F_k(r)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) )
 \end{alignat*}
 
-We can parse $r$ as $r=<x>|r'$, where the former half is the $\frac{n}{2}$-encoding of the integer $x$.
+We can parse $r$ as $r=<x>|r'$, where the former half is the $\frac{n}{2}$-bit encoding of the integer $x$.
 
 Construct the second message:
 \[ m_B=m_2||m_2||m_2||\cdots||r'||\cdots||m_\ell \]
@@ -83,7 +83,7 @@ Then we query the oracle with $m_B$ and get the response:
   &=(p,\, F_k(p)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus F_k(<x>|r')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i) )
 \end{alignat*}
 
-Similarly, We can parse $p$ as $p=<y>|p'$, where the former half is the $\frac{n}{2}$-encoding of the integer $y$.
+Similarly, We can parse $p$ as $p=<y>|p'$, where the former half is the $\frac{n}{2}$-bit encoding of the integer $y$.
 
 Construct the third message:
 \[ m_C=m_2||m_2||m_3||\cdots||p'||\cdots||m_\ell \]
@@ -120,14 +120,110 @@ With a non-negligible probability we successfully forge a valid tag $t=(q,M)$ wh
 so this $\ms{MAC}$ is not strongly secure.
 \section*{2}
 \subsection*{a}
+This is not collision-resistant.
+Construct two messages:
+\[x=x_1||x_2||\cdots||x_{B-1}||0^n\]
+\[x'=x_1||x_2||\cdots||x_{B-1}||0^{n-1}\]
+$x^i \in \{0,1\}^{n},\,|x|=Bn,|x'|=Bn-1$. Because the first step is to pad the messages
+with zero so its length is a multiple of $n$, $x$ will remain unchanged and $x'$ will be padded with one zero 
+and become the same as $x$. It is obvious that $H^s(x)$ will equal $H^s(x')$ , 
+which serves as an attack.
 
 \subsection*{b}
+This is collision-resistant.
+We show that for any $s$, a collision in modified $H^s$ yields a collision in $h^s$, 
+thereby proving that the modified version is collision-resistant.
+
+Let $x$ and $x'$ be two different strings of length $L$ and $L'$ respectively, such that
+$H^s(x)=H^s(x')$. Let $x_1,\cdots,x_B$ be the $B$ blocks of the padded $x$, and let $x_1',\cdots,x_B'$ 
+be the $B'$ blocks of the padded $x'$. Recall that $x_{B+1}=L$ and $x'_{B+1}=L'$. 
+There are two cases to consider:
+
+1. Case1: $L\ne L'$. In this case, the last step of the computation of $H^s(x)$ is $z_{B+1}=z_{B}||L$, and
+the last step of the computation of $H^s(x')$ is $z'_{B'+1}=z'_{B'}||L'$. Since $H^s(x)=H^s(x')$ it follows that 
+$z_{B}||L = z'_{B'}||L'$. However, $L \ne L'$ and so $z_{B}||L$ and $z'_{B'}||L'$ are two different strings that collide under $h^s$.
+
+2. Case2: $L=L'$. This means that $B=B'$. Let $z_0,\cdots,z_{B+1}$ be the values defined during
+the computation of $H^s(x)$, let $I_i \overset{def}{=} z_{i-1}||x_i$ denote the $i$-th input to $h^s$, $1\le i\le B+1$,
+ and set $I_{B+2}\overset{def}{=}z_{B+1}=z_B||L$. Define $I_1',\cdots,I_{B+2}'$ analogously with respect to $x'$.
+ Let $N$ be the largest index for which $I_N\ne I_{N}'$. Since $|x|=|x'|$ but $x\ne x'$, there is an $i$ with $x_i\ne x_i'$
+ and so such that an $N$ certainly exists. Because
+ \[ I_{B+2}=z_{B+1}=H^s(x)=H^s(x')=z_{B+1}'=I_{B+2}' \]
+ we have $N\le B+1$. By maximality of $N$, we have $I_{N+1}=I_{N+1}'$ and in particular $z_{N}=z_{N}'$. 
+ This means that $I_N,\, I_N'$ are a collision in $h^s$.
+
+ In conclusion, the modified Merkle-Damgård Tranform is collision-resistant.
+
 
 \subsection*{c}
+This is collision-resistant.
+We show that for any $s$, a collision in modified $H^s$ yields a collision in $h^s$, 
+thereby proving that the modified version is collision-resistant.
+
+Let $x$ and $x'$ be two different strings of length $L$ and $L'$ respectively, such that
+$H^s(x)=H^s(x')$. Let $x_1,\cdots,x_B$ be the $B$ blocks of the padded $x$, and let $x_1',\cdots,x_B'$ 
+be the $B'$ blocks of the padded $x'$. Recall that $x_{B+1}=L$ and $x'_{B+1}=L'$. 
+There are two cases to consider:
+
+1. Case1: $L\ne L'$. In this case, the last step of the computation of $H^s(x)$ is $z_{B+1}=z_{B}||L$, and
+the last step of the computation of $H^s(x')$ is $z'_{B'+1}=z'_{B'}||L'$. Since $H^s(x)=H^s(x')$ it follows that 
+$z_{B}||L = z'_{B'}||L'$. However, $L \ne L'$ and so $z_{B}||L$ and $z'_{B'}||L'$ are two different strings that collide under $h^s$.
+
+2. Case2: $L=L'$. This means that $B=B'$. Let $z_0,\cdots,z_{B+1}$ be the values defined during
+the computation of $H^s(x)$, let $I_i \overset{def}{=} z_{i-1}||x_i$ denote the $i$-th input to $h^s$, $2\le i\le B+1$,
+ and set $I_1 = z_1 = x_1,\, I_{B+2}\overset{def}{=}z_{B+1}=z_B||L$. Define $I_1',\cdots,I_{B+2}'$ analogously with respect to $x'$.
+ Let $N$ be the largest index for which $I_N\ne I_{N}'$. Since $|x|=|x'|$ but $x\ne x'$, there is an $i$ with $x_i\ne x_i'$
+ and so such that an $N$ certainly exists. Because
+ \[ I_{B+2}=z_{B+1}=H^s(x)=H^s(x')=z_{B+1}'=I_{B+2}' \]
+ we have $N\le B+1$. By maximality of $N$, we have $I_{N+1}=I_{N+1}'$ and in particular $z_{N}=z_{N}'$. 
+ This means that $I_N,\, I_N'$ are a collision in $h^s$.
+
+ In conclusion, the modified Merkle-Damgård Tranform is collision-resistant.
 
 
 \subsection*{d}
+This is not collision-resistant.
+Consider the meassage $x = x_1||x_2,\, |x_1|=|x_2|=n,$,$z_0=2n$ .
+Let $x_2$ be an $n$-bit encoding of the integer $n$.
+
+Suppose $h^s(x1||z_0)=z_1$, and construct the message $x' = z_1, z_0'=|x'|=n$.
+
+\[ H^s(x')=h^s(x'||z_0')\overset{*}{=}h^s(x'||x_2)=h^s(z_1||x_2)=H^s(x)\]
+
+*: both $z_0'$ and $x_2$ are $n$-bit encoding of the integer $n$.
+
+
+ $h^s(x1||z_0)=z_1$, and suppose that $z_1$ is an $n$-bit encoding of the integer $\ell_1$.
+
+ If $\ell_1\ne 0 $, we can construct a second message $x',\,|x'|=\ell_1$. It is obvious that $H^s(x_1||x')=H^s(x')$.
+ 
+ If $\ell_1 = 0$, consider $h^s(x_2||z_1)=z_2$ and suppose that $z_2$ is an $n$-bit encoding of the integer $\ell_2$.
+ There must be $\ell_2\ne \ell_1 = 0$, because $z_1 \ne z_0$($z_1$ represent $0$ and $z_0$ represent 2$n$) and $h^s$ is 
+ conllision resistant.
+ we can construct a message $x'',\,|x''|=\ell_2$. It is obvious that $H^s(x_1||x_2||x'')=H^s(x'')$.
 
 \section*{Additional 3.26}
+Define $\Pi=(Gen,H),\,\Pi_1=(Gen_1,H_1),\,\Pi_2=(Gen_2,H_2)$.
+Suppose $\Pi$ is not collision-resistant. Then there exists an PPT adversary $\mc{A}$ 
+that $\mc{A}$ can found a collision in $H$ with a non-negligible probability $\epsilon(n)$:
+\[ \Pr[\ms{Hash-coll}_{\mc{A},\Pi}=1]=\epsilon(n)\]
+
+Now we can construct $\mc{A}_1$ with $\mc{A}$:
+
+$\mc{A}_1$ is given $s_1,s_2$.
+
+1. Run $\mc{A}(s_1,s_2)$ and obtain $x, \ x'$.
+
+2. Output $x,\,x'$.
+
+$\mc{A}_1$ runs in polynomial time since $\mc{A}$ does. 
+Whenever $\mc{A}$ found a collision in $H$, $\mc{A}_1$ found a collision in $H_1$. 
+Also, $\mc{A}_2$ can find a collision in $H_2$. So we have 
+\[ \Pr[\ms{Hash-coll}_{\mc{A}_1,\Pi_1}=1] > \Pr[\ms{Hash-coll}_{\mc{A},\Pi}=1] = \epsilon(n) \]
+\[ \Pr[\ms{Hash-coll}_{\mc{A}_2,\Pi_2}=1] > \Pr[\ms{Hash-coll}_{\mc{A},\Pi}=1] = \epsilon(n) \]
+
+So we have that both $\mc{A}_1$ and $\mc{A}_2$ are not collision-resistant.
+
+In conclusion, if at least one of $H_1$ and $H_2$ are collision-resistant, $H$ is collision-resistant.
 
 \end{document}
