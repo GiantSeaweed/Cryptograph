@@ -97,7 +97,7 @@ Then we query the oracle with $m_C$ and get the response:
 
 Notice that $F_k(<x>|r')=F_k(r),\,F_k(<y>|p')=F_k(p)$, we can produce the tag $t=(q,M)$ and 
 \begin{alignat*}{2}
-    M &= m_r \oplus m_q \oplus m_q\\
+    M &= m_r \oplus m_p \oplus m_q\\
     &= F_k(r)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) \\
     &\oplus F_k(p)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_2)\oplus F_k(<x>|r')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i) \\
     &\oplus F_k(q)\oplus F_k(<1>|m_2)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus F_k(<y>|p')\oplus \oplus^{2^{\frac{n}{2}}}_{i=5} F_k(<i>|m_i)\\
@@ -125,7 +125,7 @@ Construct two messages:
 \[x=x_1||x_2||\cdots||x_{B-1}||0^n\]
 \[x'=x_1||x_2||\cdots||x_{B-1}||0^{n-1}\]
 $x^i \in \{0,1\}^{n},\,|x|=Bn,|x'|=Bn-1$. Because the first step is to pad the messages
-with zero so its length is a multiple of $n$, $x$ will remain unchanged and $x'$ will be padded with one zero 
+with zero so that its length is a multiple of $n$, $x$ will remain unchanged and $x'$ will be padded with one zero 
 and become the same as $x$. It is obvious that $H^s(x)$ will equal $H^s(x')$ , 
 which serves as an attack.
 
