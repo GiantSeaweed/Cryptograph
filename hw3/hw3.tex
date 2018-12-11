@@ -43,9 +43,9 @@ By concatenating the former half of $\mc{O}(m_b)$ with the latter half of $\mc{O
 
 \subsection*{c}
 No. Given $m=m_1||m_2||m_3||\cdots||m_\ell$, we can construct the following three messages:
-\[m_A=m_1||m_2||m_2||\cdots||m_\ell\]
-\[m_B=m_2||m_2||m_2||\cdots||m_\ell\]
-\[m_C=m_2||m_2||m_3||\cdots||m_\ell\]
+\[m_A=m_1||m_2||m_2||m_4||m_5||\cdots||m_\ell\]
+\[m_B=m_2||m_2||m_2||m_4||m_5||\cdots||m_\ell\]
+\[m_C=m_2||m_2||m_3||m_4||m_5||\cdots||m_\ell\]
 
 Then we query the oracle with these three new messages and produce a tag $t$ by 
 XOR the three responses.
@@ -62,8 +62,8 @@ XOR the three responses.
 So we successfully forge a valid tag $t$ where $\ms{Vrfy_k}(m,t)=1$ and $(m,t)\notin \mc{Q}$.
 
 \subsection*{d}
-No. Given $m=m_1||m_2||m_3||\cdots||m_\ell$, we can first construct the following messages:
-\[ m_A=m_1||m_2||m_2||\cdots||m_\ell \]
+No. Given $m=m_1||m_2||m_3||m_4||m_5||\cdots||m_\ell$, we can first construct the following messages:
+\[ m_A=m_1||m_2||m_2||m_4||m_5||\cdots||m_\ell \]
 
 Then we query the oracle with $m_A$ and get the response:
 \begin{alignat*}{2}
@@ -74,7 +74,7 @@ Then we query the oracle with $m_A$ and get the response:
 We can parse $r$ as $r=<x>|r'$, where the former half is the $\frac{n}{2}$-bit encoding of the integer $x$.
 
 Construct the second message:
-\[ m_B=m_2||m_2||m_2||\cdots||r'||\cdots||m_\ell \]
+\[ m_B=m_2||m_2||m_2||m_4||m_5||\cdots||r'||\cdots||m_\ell \]
 where $r'$ is the $x$-th block and $\ell=2^{\frac{n}{2}}$. We can query the oracle with $m_A$ mutiple times until $x\ge4$.
 
 Then we query the oracle with $m_B$ and get the response:
@@ -86,7 +86,7 @@ Then we query the oracle with $m_B$ and get the response:
 Similarly, We can parse $p$ as $p=<y>|p'$, where the former half is the $\frac{n}{2}$-bit encoding of the integer $y$.
 
 Construct the third message:
-\[ m_C=m_2||m_2||m_3||\cdots||p'||\cdots||m_\ell \]
+\[ m_C=m_2||m_2||m_3||m_4||m_5||\cdots||p'||\cdots||m_\ell \]
 where $p'$ is the $y$-th block and $\ell=2^{\frac{n}{2}}$. We can query the oracle with $m_B$ mutiple times until $y\ge4$.
 
 Then we query the oracle with $m_C$ and get the response:
@@ -106,7 +106,7 @@ Notice that $F_k(<x>|r')=F_k(r),\,F_k(<y>|p')=F_k(p)$, we can produce the tag $t
     &=F_k(q)\oplus F_k(<1>|m_1)\oplus F_k(<2>|m_2)\oplus F_k(<3>|m_3)\oplus \oplus^{\ell}_{i=4} F_k(<i>|m_i) 
 \end{alignat*}
 
-The discussion above is based on the condition that $x$ and $y$ are greater than 4.
+The discussion above is based on the condition that $x$ and $y$ are greater than 3.
 \begin{alignat*}{2}
     \Pr[x\ge 4 \wedge y\ge 4]&=\Pr[x\ge 4]\Pr[y\ge4]\\
     &= (1-2^{\frac{n}{2}-2})^2
@@ -121,13 +121,34 @@ so this $\ms{MAC}$ is not strongly secure.
 \section*{2}
 \subsection*{a}
 This is not collision-resistant.
-Construct two messages:
-\[x=x_1||x_2||\cdots||x_{B-1}||0^n\]
-\[x'=x_1||x_2||\cdots||x_{B-1}||0^{n-1}\]
-$x^i \in \{0,1\}^{n},\,|x|=Bn,|x'|=Bn-1$. Because the first step is to pad the messages
-with zero so that its length is a multiple of $n$, $x$ will remain unchanged and $x'$ will be padded with one zero 
-and become the same as $x$. It is obvious that $H^s(x)$ will equal $H^s(x')$ , 
-which serves as an attack.
+
+I am going to show that a compression function can be constructed such that even if 
+the compression function is collision-resistant the resulting hash function may not be collision-resistant.
+
+Suppose that $f:\{0,1\}^{2n}\rightarrow\{0,1\}^{\frac{n}{2}}$ is a collision-resistant function.
+ Based on $f$, we can construct another function $h:\{0,1\}^{2n}\rightarrow\{0,1\}^{n}$ as follows:
+ \begin{equation*}
+h(x)=
+ \begin{cases}
+     0^n, & x = 0^n || x^*,\,\mbox{where }x^*\mbox{ is a specific constant string in }\{0,1\}^{n} \\
+     1^{\frac{n}{2}}||f(x), & \mbox{otherwise}
+ \end{cases}
+\end{equation*}
+
+We can show that $h$ is also collision-resistant. If there exists $x_a$ and $x_b(x_a\ne x_b)$ such that $h(x_a)=h(x_b)$, 
+there must be $1^{\frac{n}{2}}||f(x_a) =1^{\frac{n}{2}}||f(x_b)$ because $x_a$ and $x_b$ cannot be $0^n || x^*$ at the same time.
+So we have $f(x_a)=f(x_b)$, contradicting the fact that $f$ is collision-resistant.
+
+Construct two messages $x,\, x'$:
+\[x=x^*||x_2,\, x'=x_2,\, x_2 \in \{0,1\}^{n}\]
+
+Remember that the $IV$ of Construction 3.5 is $0^n$. We have:
+\[H^s(x) = H^s(x^*||x_2) =  H^s\Big(h^s(0^n||x^*)\, ||\, x_2\Big) =  h^s(0^n||x_2) \]
+\[H^s(x') = h^s(0^n||x_2)\]
+
+So far we have found a collision for $H$, proving that the resulting hash function is 
+not collision-resistant.
+
 
 \subsection*{b}
 This is collision-resistant.
@@ -183,24 +204,38 @@ the computation of $H^s(x)$, let $I_i \overset{def}{=} z_{i-1}||x_i$ denote the 
 
 \subsection*{d}
 This is not collision-resistant.
-Consider the meassage $x = x_1||x_2,\, |x_1|=|x_2|=n,$,$z_0=2n$ .
-Let $x_2$ be an $n$-bit encoding of the integer $n$.
 
-Suppose $h^s(x1||z_0)=z_1$, and construct the message $x' = z_1, z_0'=|x'|=n$.
+I am going to show that a compression function can be constructed such that even if 
+the compression function is collision-resistant the resulting hash function may not be collision-resistant.
 
-\[ H^s(x')=h^s(x'||z_0')\overset{*}{=}h^s(x'||x_2)=h^s(z_1||x_2)=H^s(x)\]
+Suppose that $f:\{0,1\}^{2n}\rightarrow\{0,1\}^{\frac{n}{2}}$ is a collision-resistant function.
+ Based on $f$, we can construct another function $h:\{0,1\}^{2n}\rightarrow\{0,1\}^{n}$ as follows:
+ \begin{equation*}
+h(x)=
+ \begin{cases}
+     <L_0>, & x = <L_0+n> ||\, x^*,\,\mbox{where }x^*\mbox{ is a specific constant string in }\{0,1\}^{n} \\
+     < \ell \oplus 1^{\frac{n}{2}}>||f(x), & \mbox{otherwise, where } \ell \in \{0,1\}^{\frac{n}{2}} \mbox{ is the former half of }<L_0>
+ \end{cases}
+\end{equation*}
 
-*: both $z_0'$ and $x_2$ are $n$-bit encoding of the integer $n$.
+Let me explain it in detail. $L_0$ is a specific constant interger and is a integer mutiple of the $n$. $<i>\in \{0,1\}^{n}$ denotes the 
+$n$-bit encoding of $i$. In the second case, $ < \ell \oplus 1^{\frac{n}{2}}>$ is used to prevent from colliding with the first case.
 
+We can show that $h$ is also collision-resistant. If there exists $x_a$ and $x_b(x_a\ne x_b)$ such that $h(x_a)=h(x_b)$, 
+there must be $< \ell \oplus 1^{\frac{n}{2}}>||f(x_a) = < \ell \oplus 1^{\frac{n}{2}}>||f(x_b)$ because $x_a$ and $x_b$ cannot be $<L_0+n> || x^*$ at the same time.
+So we have $f(x_a)=f(x_b)$, contradicting the fact that $f$ is collision-resistant.
 
- $h^s(x1||z_0)=z_1$, and suppose that $z_1$ is an $n$-bit encoding of the integer $\ell_1$.
+Construct two messages $x,\, x'$, where $|x|=L_0+n=Bn+n,\,|x'|=L_0=Bn$:
+\[x=x^*||x_1||x_2||\cdots||x_{B}\]
+\[x'=x_1||x_2||\cdots||x_{B}\]
 
- If $\ell_1\ne 0 $, we can construct a second message $x',\,|x'|=\ell_1$. It is obvious that $H^s(x_1||x')=H^s(x')$.
- 
- If $\ell_1 = 0$, consider $h^s(x_2||z_1)=z_2$ and suppose that $z_2$ is an $n$-bit encoding of the integer $\ell_2$.
- There must be $\ell_2\ne \ell_1 = 0$, because $z_1 \ne z_0$($z_1$ represent $0$ and $z_0$ represent 2$n$) and $h^s$ is 
- conllision resistant.
- we can construct a message $x'',\,|x''|=\ell_2$. It is obvious that $H^s(x_1||x_2||x'')=H^s(x'')$.
+Remember that the $IV$ here is the length of the input. We have:
+\[H^s(x) = H^s(x^*||x_1||x_2||\cdots||x_{B}) =  H^s\Big(h^s(<L_0+n>||x^*)\, ||x_1|| x_2||\cdots||x_{B}\Big) =  H^s\Big(h^s(<L_0>||x_1)\,||x_2||\cdots||x_{B}\Big) \]
+\[H^s(x') = H^s(x_1||x_2||\cdots||x_{B}) = H^s\Big(h^s(<L_0>||x_1)\,||x_2||\cdots||x_{B}\Big)\]
+
+So far we have found a collision for $H$, proving that the resulting hash function is 
+not collision-resistant.
+
 
 \section*{Additional 3.26}
 Define $\Pi=(Gen,H),\,\Pi_1=(Gen_1,H_1),\,\Pi_2=(Gen_2,H_2)$.

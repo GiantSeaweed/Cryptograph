@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  9 DEC 2018 11:24
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  11 DEC 2018 12:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1479,9 +1479,14 @@ Overfull \hbox (4.08105pt too wide) in paragraph at lines 96--96
 
 
 LaTeX Font Warning: Font shape `TU/SongtiSC(0)/m/sl' undefined
-(Font)              using `TU/SongtiSC(0)/m/n' instead on input line 121.
+(Font)              using `TU/SongtiSC(0)/m/n' instead on input line 119.
 
-[2] [3] [4] [5] (./hw3.aux)
+[2] [3] [4]
+Overfull \hbox (20.19463pt too wide) detected at line 233
+\OML/cmm/m/it/10.53937 H[]\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 x\OT1/cmr/m/n/10.53937 ) = \OML/cmm/m/it/10.53937 H[]\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj [] jj\OML/cmm/m/it/10.53937 x[]\OT1/cmr/m/n/10.53937 ) = \OML/cmm/m/it/10.53937 H[][]h[]\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 < L[] \OT1/cmr/m/n/10.53937 + \OML/cmm/m/it/10.53937 n > \OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OT1/cmr/m/n/10.53937 ) \OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj [] jj\OML/cmm/m/it/10.53937 x[][] \OT1/cmr/m/n/10.53937 = \OML/cmm/m/it/10.53937 H[][]h[]\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 < L[] > \OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OT1/cmr/m/n/10.53937 ) \OMS/cmsy/m/n/10.53937 jj\OML/cmm/m/it/10.53937 x[]\OMS/cmsy/m/n/10.53937 jj [] jj\OML/cmm/m/it/10.53937 x[][]
+ []
+
+[5] (./hw3.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
