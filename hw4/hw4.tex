@@ -1,0 +1,55 @@
+%!TEX program = xelatex
+\documentclass[a4papers]{ctexart}
+%数学符号
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%表格
+\usepackage{graphicx,floatrow}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{makecell}
+%页边距
+\usepackage{geometry}
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+%首行缩进两字符 利用\indent \noindent进行控制
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\setromanfont{Songti SC}
+% \setromanfont{Heiti SC}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\ms}[1]{\mathsf{#1}}
+\newcommand{\mr}[1]{\ \mathrm{#1}\ }
+
+\title{Cryptography--Homework 4}
+\author{冯诗伟161220039}
+\date{}
+\begin{document}
+\maketitle
+\section*{1}
+Assume that the adversary $\mathcal{A}$ can break 1$\%$ of $\mathbb{Z}_N^*$ (a specific subset)
+with probability of 1 and break the other 99$\%$ with probability of 0.
+ 
+We can construct $\mathcal{A'}$ as follows:
+
+1. Given $y=x^e \mr{mod} N$.
+
+2. Uniformly choose $r \in \mathbb{Z}_N^*$ and $r^{-1}$ such that $r\cdot r^{-1} = 1 \mr{mod} N$.
+
+3. Feed $y\cdot r^e$ to $\mathcal{A}$ and get $z = \mathcal{A}(y\cdot r^e\, \mathrm{mod}\, N)$.
+
+4. Compute $y' = z\cdot r^{-1} \mr{mod} N$.
+
+5. Repeat step 1 to 4 for XXX times. Denote the $y'$ in the $i$-th round as $y'_i$.
+If any two outputs($y'_i$ and $y'_j$) in these XXX rounds are the same, output $y'_i$. 
+Otherwise output 0.
+
+Let me explain it in detail.
+
+Step1 and Step2 is trival. In Step3, $z=y^{1/e}$
+
+\section*{2}
+\section*{Additional}
+\end{document}
