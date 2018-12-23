@@ -40,15 +40,34 @@ We can construct $\mathcal{A'}$ as follows:
 
 3. Feed $y\cdot r^e$ to $\mathcal{A}$ and get $z = \mathcal{A}(y\cdot r^e\, \mathrm{mod}\, N)$.
 
-4. Compute $y' = z\cdot r^{-1} \mr{mod} N$.
+4. Compute $x' = z\cdot r^{-1} \mr{mod} N$. Check whether $(x')^e = y \mr{mod} N$ holds.
 
-5. Repeat step 1 to 4 for XXX times. Denote the $y'$ in the $i$-th round as $y'_i$.
-If any two outputs($y'_i$ and $y'_j$) in these XXX rounds are the same, output $y'_i$. 
-Otherwise output 0.
+5. Repeat step 1 to 4 for XXX times.
+ Denote the $x',\, y $ in the $i$-th round as $x'_i, y_i$.
+If $(x'_i)^e = y_i \mr{mod} N$ for some $i$, output $x'_i$ and stop. 
+If this did not occur after XXX rounds, output $x'_1$.
 
 Let me explain it in detail.
 
-Step1 and Step2 is trival. In Step3, $z=y^{1/e}$
+Step1 and Step2 are trival.
+
+In Step3, the equation, $z=(y\cdot r^e)^{1/e}= y^{1/e}\cdot r \mr{mod} N$, holds with probability of $0.01$ since $\mc{A}$ succeeds with probability of $0.01$.
+
+In Step4, if $\mc{A}$ called by $\mc{A'}$ succeeds in Step3, we can get $x' = y^{1/e}\cdot r\cdot r^{-1} = y^{1/e} \mr{mod} N$, which means $(x')^e = y \mr{mod} N$.
+
+In Step5,
+%  first we compute the probability that $\mc{A'}$ succeeds in less than $k$ rounds.
+% $y'_k$ equals exactly one $y'_i$ for some $i$ < $k$. Denote this event as $E_k$.
+intuition is that the more times $\mc{A'}$ tries, the more likely $\mc{A'}$ will succeeds. 
+So we want to know the least $k$ that satisfy the following inequation:
+\[ 1- (1-0.01)^k \ge 0.99\]
+which means after trying $k$ times $\mc{A'}$ will succeeds with a probability not less than $0.99$.
+% \[ \sum_{i=2}^k \Pr[E_i] \ge 0.99 \]
+% \[ \therefore \sum_{i=2}^k 0.01 \times C_{i-1}^1(0.99)^{i-2} \times 0.01 \ge 0.99\]
+So we have:\[ k \ge 459\]
+% \[ k \ge 662\]
+As to the running time $t'$, Step1 and Step4 is $\mc{O}(1)$. Step2 is $\mc{O}(log\ N)$ and Step3 is $\mc{O}(t)$.
+So running time $t'$ of $\mc{A'}$ is polynomial in $t$ and $\lVert N \rVert$.
 
 \section*{2}
 \section*{Additional}
