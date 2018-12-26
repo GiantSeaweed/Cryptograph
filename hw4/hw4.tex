@@ -22,7 +22,7 @@
 \newcommand{\mc}[1]{\mathcal{#1}}
 \newcommand{\ms}[1]{\mathsf{#1}}
 \newcommand{\mr}[1]{\ \mathrm{#1}\ }
-
+\newcommand{\mb}[1]{\mathbb{#1}}
 \title{Cryptography--Homework 4}
 \author{冯诗伟161220039}
 \date{}
@@ -42,10 +42,10 @@ We can construct $\mathcal{A'}$ as follows:
 
 4. Compute $x' = z\cdot r^{-1} \mr{mod} N$. Check whether $(x')^e = y \mr{mod} N$ holds.
 
-5. Repeat step 1 to 4 for XXX times.
+5. Repeat step 1 to 4 for 459 times.
  Denote the $x',\, y $ in the $i$-th round as $x'_i, y_i$.
 If $(x'_i)^e = y_i \mr{mod} N$ for some $i$, output $x'_i$ and stop. 
-If this did not occur after XXX rounds, output $x'_1$.
+If this did not occur after 459 rounds, output $x'_1$.
 
 Let me explain it in detail.
 
@@ -70,5 +70,51 @@ As to the running time $t'$, Step1 and Step4 is $\mc{O}(1)$. Step2 is $\mc{O}(lo
 So running time $t'$ of $\mc{A'}$ is polynomial in $t$ and $\lVert N \rVert$.
 
 \section*{2}
+First, because $g$ is a generator($g^n = 1\, \mr{mod}\, n $), $(g^r)^n = (g^n)^r = 1^r = 1\, \mr{mod}\, n$ .
+
+Second, we can show that for all $0\le i \le n-1,\, i\ne r$, there exists a $q(0\le q \le n-1)$ such that $(g^r)^q = g^i \mr{mod}\, n$.
+
+Let $(g^r)^q = g^i \mr{mod}\, n$. So $rq = i\, \mr{mod}\, n$. Because $gcd(r,n)=1$, there exists a $r^{-1}$
+such that $r\cdot r^{-1} = 1\, \mr{mod}\, n$. So we have
+\[ q = i\cdot r^{-1} \, \mr{mod}\, n\]
+
+So far, we have proved that $g^r$ is also a generator of $\mathbb{G}$.
+
 \section*{Additional}
+\noindent Construct the following one-way function family 
+$\Pi = (\mathsf{Gen},\mathsf{Samp},f)$:
+
+$\mathsf{Gen}$: Given $1^n$, outputs parameters $I=(\mb{G},\, q,\, g)$ where the order $\lVert q \rVert = n$. $g$ is the generator of $\mb{G}$.
+$\mc{D}_I = \mc{R}_I = \mb{G}.$
+
+$\mathsf{Samp}$: On input $I$, outputs a uniformly distributed $x\in \mc{D}_I$. 
+
+$f$ : On input $I$ and $x\in \mc{D}_I$, outputs $y=f_I(x) = g^x$.
+
+\noindent We are going to show that $\Pi$ is easy to compute and hard to invert.
+
+1. Easy to compute. Given $g$ and $x$, the complexity of compute $g^x \mr{mod} n$ is $\mc{O}(log\ x)$ .
+
+2. Hard to invert. Design the following experiment 
+$\mathsf{Invert}_{\mc{A},\Pi}(n)$:
+
+(1) $\mathsf{Gen}$ is run to obtain $I$, and then $\mathsf{Samp}(I)$ is run to obtain a uniform $x \in \mc{D}$.
+Finally $y:=f_I(x) = g^x$ is computed.
+
+(2) $\mc{A}$ is given $I$ and $y = g^x$ as input, and outputs $x'$.
+
+(3) The output if the experiment is 1 if $f_I(x')=x$.
+
+\noindent We can see that the view of $\mc{A}$ in $\mathsf{Invert}_{\mc{A},\Pi}(n)$ is identical to that of 
+$\mathsf{DLog}_{\mc{A},\mathsf{Gen}}(n)$. So $\mc{A}$ succeeds in $\mathsf{Invert}_{\mc{A},\Pi}(n)$
+if and only if $\mc{A}$ succeeds in $\mathsf{DLog}_{\mc{A},\mathsf{Gen}}(n)$. We have:
+\[\Pr[\mathsf{Invert}_{\mc{A},\Pi}(n)=1] 
+= \Pr[\mathsf{DLog}_{\mc{A},\mathsf{Gen}}(n)=1] \le negl(n)\]
+So we have shown that $\Pi$ is hard to invert.
+
+
+
+
+
+
 \end{document}

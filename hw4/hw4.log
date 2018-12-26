@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  24 DEC 2018 01:11
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2018.3.10)  26 DEC 2018 09:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1467,14 +1467,23 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 30.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-] (./hw4.aux) ) 
+]
+
+LaTeX Font Warning: Font shape `TU/SongtiSC(0)/m/sl' undefined
+(Font)              using `TU/SongtiSC(0)/m/n' instead on input line 120.
+
+[2] (./hw4.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
 Here is how much of TeX's memory you used:
- 22222 strings out of 493005
- 446849 string characters out of 6134596
- 470461 words of memory out of 5000000
- 25980 multiletter control sequences out of 15000+600000
- 11414 words of font info for 68 fonts, out of 8000000 for 9000
+ 22232 strings out of 493005
+ 447085 string characters out of 6134596
+ 472461 words of memory out of 5000000
+ 25986 multiletter control sequences out of 15000+600000
+ 11438 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,6n,67p,10485b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on hw4.pdf (1 page).
+Output written on hw4.pdf (2 pages).
